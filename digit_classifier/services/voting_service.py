@@ -7,7 +7,7 @@ class VotingService:
     
     def get_voter_distribution(self):
         distribution = [
-            db.select([SALES.c.company, db.func.sum(SALES.c.no_of_invoices)]).group_by(SALES.c.company)
+            db.session.query(VoteSample.voted_by, db.func.count(VoteSample.id)).group_by(VoteSample.voted_by)
         ] 
         result = []
         for record in distribution:
