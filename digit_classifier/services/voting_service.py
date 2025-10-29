@@ -6,7 +6,11 @@ class VotingService:
         print("VotingService initialized")
     
     def get_voter_distribution(self):
-        distribution = db.session.query(VoteSample.voted_by, db.func.count(VoteSample.id)).group_by(VoteSample.voted_by)
+        distribution = db.session.query(
+            VoteSample.voted_by,
+            func.count(VoteSample.id).label('predictions'),
+            func.avg(VoteSample.predicted_label == VoteSample.true_label).label('accuracy'),
+        ).group_by(VoteSample.voted_by).all()
         result = []
         for record in distribution:
             result.append({
