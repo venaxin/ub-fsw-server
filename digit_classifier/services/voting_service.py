@@ -11,7 +11,6 @@ class VotingService:
             func.count(VoteSample.id).label('predictions'),
             func.avg(VoteSample.predicted_label == VoteSample.true_label).label('accuracy'),
         ).group_by(VoteSample.voted_by).all()
-
         result = []
         for record in distribution:
             result.append({
